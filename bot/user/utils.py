@@ -5,6 +5,7 @@ from bot.default_functions import send_callback_aiogram_message, send_message_ai
 
 import bot.user.texts as texts
 import bot.user.keyboards as keyboards
+import re
 
 
 def is_registered(func):
@@ -26,3 +27,15 @@ def is_registered(func):
             )
 
     return wrapper
+
+
+def extract_ids(url):
+    pattern = r"album/(\d+)(?:/track/(\d+))?"
+    match = re.search(pattern, url)
+    if match:
+        album_id = match.group(1)
+        track_id = match.group(2)
+        if track_id is None:
+            return "album link"
+        return album_id, track_id
+    return "no format"

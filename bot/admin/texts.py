@@ -3,8 +3,19 @@ import bot.admin.utils as utils
 
 def users_statistic(users):
     text = '📊 Статистика пользователей:\n\n'
+    to_sort = []
     for user in users:
-        text += f'@{user.username} загрузил {utils.decline_track(user.count)}\n'
+        if user.username:
+            to_sort.append(
+                [user.count, f'@{user.username}']
+            )
+        else:
+            to_sort.append(
+                [user.count, f'{user.peer_id}']
+            )
+    to_sort.sort(reverse=True)
+    for count, name in to_sort:
+        text += f'{name} загрузил {utils.decline_track(count)}\n'
     return text
 
 
